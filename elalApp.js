@@ -1,7 +1,7 @@
 var express = require('express');
 const app = express();
 var bodyParser = require('body-parser');
-
+var port = process.env.PORT || 3000;
 
 //mongoDB variables
 const MongoClient = require('mongodb').MongoClient;
@@ -19,8 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 MongoClient.connect(connectionString, (err, mongoDBService) => {
   if (err) return console.log(err);
   db = mongoDBService.db('firstdb');
-  app.listen(3001, () => {
-    console.log('listening on 3001');
+  app.listen(port, () => {
+    console.log('listening on ' + port);
   });
 });
 

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>פרויקט דמו - אל על</title>
+	<style>
+	@font-face {
+		font-family: 'VarelaRound-Regular';
+		src: url(./VarelaRound-Regular.ttf);
+	}
+	* {
+		font-family: "VarelaRound-Regular";
+	}
+	a {
+		font-size: large
+	}
+	textarea {
+		height: 250px;
+	}
+	</style>
+</head>
+<body dir="rtl"  class="w3-sand">
+    <div class="w3-sidebar w3-indigo w3-bar-block w3-border w3-card" style="width:25%;right:0">
+        <h5 class="w3-center w3-xlarge w3-sand w3-card"><b>ניווט</b></h5>
+        <a href="#" onclick="navigate('show')" 
+			class="w3-bar-item w3-button w3-hover-light-blue" style="text-align: right">צפייה בתשובה</a>
+        <a href="#" onclick="navigate('add')" 
+			class="w3-bar-item w3-button w3-hover-light-blue" style="text-align: right">הוספת שאלה-תשובה</a>
+    </div>
+	
+    <div style="margin-right:25%;padding-left:2%;" class="w3-container">
+			<center>
+				<h2>פרויקט דמו - שאלות מאל על</h2>
+			</center>
+			<form method="POST" action="dbQuery" class="w3-container w3-margin  w3-animate-opacity" id="showAnswerForm">
+				<span class="w3-large">בחר שאלה</span>
+				<select id="selectQtn" class="w3-select w3-round w3-border" name="questionID"></select>
+				<center>
+					<button type="submit" id="btnSend" class="w3-button w3-light-blue w3-border w3-card w3-large w3-margin-top">הצג תשובה</button>
+				</center>
+			</form>
+			
+			<form method="POST" action="dbAdd" class="w3-container w3-margin w3-animate-opacity" id="addForm"  style="display:none">
+				<div class="w3-half w3-padding">
+					<span class="w3-large">תשובה</span>
+					<textarea class="w3-input w3-border w3-round " name="answer"></textArea>
+				</div>
+				<div class="w3-half w3-padding">
+					<span class="w3-large">שאלה</span>
+					<textarea class="w3-input w3-border w3-round" name="question"></textArea>
+				</div>
+				<center>
+					<button type="submit" id="btnSend" class="w3-button w3-light-blue w3-border w3-card w3-large w3-margin-top">הוסף תשובה</button>
+				</center>
+			</form>
+	
+			
+			
+    </div>
+	
+	<div style="margin-right:25%;padding-left:2%" class="w3-container">
+			
+			
+    </div>
+	
+	<script>		
+	var xmlhttp = new XMLHttpRequest();
+	var url = "/dbQuery/all";
+
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var qtnJsonArr = JSON.parse(this.responseText);
+			insertSelectQtnOptions(qtnJsonArr);
+		}
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+
+	function insertSelectQtnOptions(i_qtnFromDbArr) {
+		var options = "";
+		var i;
+		for(i = 0; i < i_qtnFromDbArr.length; i++) {
+			options += '<option value=' + i_qtnFromDbArr[i]._id + '>' + i_qtnFromDbArr[i].question + '</option>\n';
+		}
+		document.getElementById("selectQtn").innerHTML = options;
+	}
+	
+	function navigate(tab){
+		var addForm = document.getElementById('addForm');
+		var showAnswerForm = document.getElementById('showAnswerForm');
+	
+		if (tab.localeCompare("show") == 0) {
+			addForm.style.display = "none";
+			showAnswerForm.style.display = "block";
+		} else if (tab.localeCompare("add") == 0) {
+			addForm.style.display = "block";
+			showAnswerForm.style.display = "none";
+		}
+		
+
+	}
+	</script>
+
+</body>
+</html>
